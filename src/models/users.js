@@ -44,7 +44,32 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    interesi:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    about:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    username:{
+        type: String,
+        required: true
+    },
+    kontakt:{
+        type: Number,
+        required: true,
+        trim: true
+    },
+    location:{
+        type: String,
+        required: true,
+        trim: true
+    }
+
 })
 
 userSchema.virtual('posts',{

@@ -16,7 +16,7 @@ app.use(express.json())
 const Post = require ('./models/posts')
 const User = require ('./models/users')
 const City = require ('./models/gradovi')
-
+const Profile = require ('./models/profil')
 
 
 //KORISNICI:
@@ -63,6 +63,25 @@ app.post('/odjava', auth, async(req,res)=>{
 //profil korisnika
 app.get('/profil', auth, async (req,res)=>{
     res.send(req.user)
+})
+
+
+//uredi profil korisnika
+app.patch('/uredi-profil', auth, async (req, res)=>{
+    const updates = Object.keys(req,body)
+    const canUpdate = ['interesi', 'about']
+    const isValid = updates.every((update) => canUpdate.includes(update))
+    if(!isValid){
+        return res.status(400).send({error: 'Nije moguće urediti profil'})
+    }
+    
+    try{
+        updates.forEach((update) => req.user[update] = req.body[update])
+        await req.user.save()
+        res.send(req.user)
+    }catch(error){
+        res.status(400).send(error)
+    }
 })
 
 //promjena lozinke
